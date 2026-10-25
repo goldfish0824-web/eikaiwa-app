@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "note": "上級者版のモード定義。話題・場面は自由に追加・編集してよい。会話開始時に各リストからランダムに1つ選ぶ（直近に使ったものは避ける）。",
+  "modes": [
+    {
+      "id": "smalltalk",
+      "name_ja": "雑談",
+      "name_en": "Small Talk",
+      "description_ja": "友人・同僚・初対面の相手との雑談。話題を広げる・切り替える力をつける。",
+      "personas": [
+        { "name": "Alex", "voice_hint": "male", "description": "a friendly American coworker in his thirties who loves food and travel" },
+        { "name": "Sophie", "voice_hint": "female", "description": "a cheerful British friend in her late twenties who works in tech" },
+        { "name": "Daniel", "voice_hint": "male", "description": "a laid-back Australian you just met at a party" },
+        { "name": "Maya", "voice_hint": "female", "description": "a Canadian teacher you met at a conference, curious about Japan" }
+      ],
+      "topics": [
+        "what you did last weekend",
+        "a recent trip or a place you want to visit",
+        "food you have been into lately",
+        "how work has been this week",
+        "a hobby you started recently",
+        "a movie, show, or book you enjoyed",
+        "new technology or gadgets you use every day",
+        "how AI tools are changing everyday life",
+        "the change of seasons and what you like to do in each one",
+        "living in a smaller city versus a big city",
+        "morning routines and habits",
+        "a funny or embarrassing thing that happened recently",
+        "plans for the end of the year",
+        "learning languages as an adult",
+        "the best advice you have ever received"
+      ]
+    },
+    {
+      "id": "discussion",
+      "name_ja": "議論",
+      "name_en": "Discussion",
+      "description_ja": "社会問題について、反対の立場のAIと議論する。英検1級の二次試験のような形式。",
+      "personas": [
+        { "name": "Chris", "voice_hint": "male", "description": "a sharp but fair debate partner" },
+        { "name": "Rachel", "voice_hint": "female", "description": "a thoughtful journalist who likes to challenge ideas" }
+      ],
+      "topics": [
+        "Will AI create more jobs than it destroys?",
+        "Should remote work become the standard for office jobs?",
+        "How should Japan respond to its aging population?",
+        "Should university education be free?",
+        "Should social media companies be more strictly regulated?",
+        "Is nuclear power necessary to fight climate change?",
+        "Is overtourism a serious problem, and how should it be managed?",
+        "Should companies adopt a four-day work week?",
+        "Is a completely cashless society desirable?",
+        "Should English education in Japan start at an earlier age?",
+        "Is it acceptable to use genetic engineering to prevent diseases?",
+        "Is government spending on space exploration justified?",
+        "Should cars be banned from city centers?",
+        "Is a universal basic income a realistic idea?",
+        "Should personal privacy be limited for the sake of public safety?"
+      ]
+    },
+    {
+      "id": "roleplay",
+      "name_ja": "場面練習",
+      "name_en": "Role-play",
+      "description_ja": "仕事や生活の具体的な場面を演じる。途中で予想外の展開が1回入る。",
+      "scenes": [
+        {
+          "id": "rp01",
+          "title_ja": "ALTと授業の打ち合わせ",
+          "scene": "A short meeting in the teachers' room before class",
+          "ai_role": "an ALT who has a different idea for today's lesson activity",
+          "user_role": "a Japanese English teacher planning a team-taught lesson",
+          "goal": "Agree on the lesson plan and who does what, while respecting the ALT's idea",
+          "complication": "the ALT says the activity you planned did not work well in another class"
+        },
+        {
+          "id": "rp02",
+          "title_ja": "国際学会の休憩時間の雑談",
+          "scene": "A coffee break at an international education conference",
+          "ai_role": "a teacher from another country you have just met",
+          "user_role": "a teacher from Japan attending the conference",
+          "goal": "Introduce yourself, find a common interest, and exchange contact information naturally",
+          "complication": "the other person asks a tough question about Japanese education"
+        },
+        {
+          "id": "rp03",
+          "title_ja": "ホテルで苦情を伝える",
+          "scene": "The front desk of a hotel abroad, late at night",
+          "ai_role": "a tired but polite front desk clerk",
+          "user_role": "a guest whose room has a broken air conditioner",
+          "goal": "Get the problem fixed or get a room change tonight",
+          "complication": "the hotel is fully booked"
+        },
+        {
+          "id": "rp04",
+          "title_ja": "不良品を返品する",
+          "scene": "The customer service counter of an electronics store",
+          "ai_role": "a store employee who follows the rules strictly",
+          "user_role": "a customer returning headphones that stopped working",
+          "goal": "Get a refund or an exchange",
+          "complication": "you no longer have the receipt"
+        },
+        {
+          "id": "rp05",
+          "title_ja": "日本の学校制度を説明する",
+          "scene": "A casual dinner with a visitor from abroad",
+          "ai_role": "a curious visitor who asks many follow-up questions",
+          "user_role": "a Japanese high school teacher",
+          "goal": "Explain how Japanese high schools work, including club activities and university entrance",
+          "complication": "the visitor compares it critically with their own country's system"
+        },
+        {
+          "id": "rp06",
+          "title_ja": "英語を話す保護者との面談",
+          "scene": "A parent-teacher meeting at a Japanese high school",
+          "ai_role": "an English-speaking parent who is worried about their child",
+          "user_role": "the child's homeroom teacher",
+          "goal": "Explain the situation clearly, listen to the parent's concerns, and agree on next steps",
+          "complication": "the parent becomes a little emotional and asks for something the school cannot do"
+        },
+        {
+          "id": "rp07",
+          "title_ja": "国際的な職の面接",
+          "scene": "An online job interview for a position at an international school",
+          "ai_role": "an interviewer who asks behavioral questions",
+          "user_role": "a candidate with experience teaching English in Japan",
+          "goal": "Answer questions with concrete examples and ask one good question at the end",
+          "complication": "the interviewer asks about a weakness and follows up on your answer"
+        },
+        {
+          "id": "rp08",
+          "title_ja": "駅で観光客に道案内",
+          "scene": "A busy train station in central Japan",
+          "ai_role": "a tourist who is in a hurry and slightly lost",
+          "user_role": "a local person who offers to help",
+          "goal": "Help the tourist get to the right platform and train",
+          "complication": "the train the tourist wants has been delayed"
+        },
+        {
+          "id": "rp09",
+          "title_ja": "パーティーでの人脈づくり",
+          "scene": "A networking party for people working in education technology",
+          "ai_role": "a startup founder who talks fast and is a bit self-promoting",
+          "user_role": "a teacher interested in AI tools for education",
+          "goal": "Have a good conversation, share your own projects, and end the conversation politely",
+          "complication": "the founder tries to sell you their product"
+        },
+        {
+          "id": "rp10",
+          "title_ja": "頼みごとを丁寧に断る",
+          "scene": "A colleague stops by your desk",
+          "ai_role": "a friendly colleague who wants you to take on an extra task",
+          "user_role": "a busy teacher who cannot take on more work right now",
+          "goal": "Decline politely while keeping a good relationship, and offer an alternative if possible",
+          "complication": "the colleague says no one else can do it"
+        }
+      ]
+    },
+    {
+      "id": "quickfire",
+      "name_ja": "瞬発トレーニング",
+      "name_en": "Quick Response",
+      "description_ja": "短い質問に即答する。止まらずに返す力をつける。黙ったまま一定時間たつとアプリが [NEXT] を送る。",
+      "personas": [
+        { "name": "Sam", "voice_hint": "any", "description": "an energetic quiz-show style host" }
+      ],
+      "silence_seconds_before_next": 4,
+      "question_types": [
+        "opinion",
+        "would you rather",
+        "describe something",
+        "explain a reason",
+        "react to a statement",
+        "agree or disagree"
+      ]
+    }
+  ]
+}

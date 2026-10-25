@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "note": "学生版 Gemini版（大学生など18歳以上向け）のシナリオ定義。_ja は画面表示用、_en はシステムプロンプト用。opening と max_turns はレベル（easy / normal / challenge）ごと。ai_role_voice_hint は Gemini TTS の声選びに使う。",
+  "levels": {
+    "easy": { "name_ja": "やさしい", "name_en": "Easy", "eiken": "準2級", "tts_style": "Say slowly and clearly, in a friendly tone:" },
+    "normal": { "name_ja": "ふつう", "name_en": "Normal", "eiken": "2級", "tts_style": "Say clearly at a slightly slow pace, in a friendly tone:" },
+    "challenge": { "name_ja": "チャレンジ", "name_en": "Challenge", "eiken": "準1級", "tts_style": "Say naturally at a normal conversational pace:" }
+  },
+  "categories": ["自分のこと", "大学生活", "アルバイト・仕事", "海外旅行", "留学", "意見・将来"],
+  "scenarios": [
+    {
+      "id": "u01",
+      "category": "自分のこと",
+      "title_ja": "留学生との交流会で自己紹介",
+      "title_en": "Introducing yourself at an international student mixer",
+      "setting_ja": "大学の国際交流イベントで、留学生と初めて話します。",
+      "setting_en": "An international student mixer at a Japanese university; the student meets an exchange student for the first time",
+      "ai_role_ja": "アメリカからの留学生 Jordan",
+      "ai_role_en": "Jordan, a friendly 20-year-old exchange student from the United States who just arrived in Japan",
+      "ai_role_voice_hint": "male",
+      "user_role_ja": "日本の大学生（名前はニックネームでOK）",
+      "user_role_en": "a Japanese university student (may use a nickname)",
+      "goal_ja": "呼んでほしい名前・専攻・最近ハマっていることを伝え、相手にも質問する",
+      "goal_en": "Tell Jordan what to call them, what they study, and something they are into lately, and ask Jordan at least one question",
+      "key_phrases": [
+        { "en": "I'm majoring in ...", "ja": "…を専攻しています" },
+        { "en": "Lately, I've been into ...", "ja": "最近、…にハマっています" },
+        { "en": "What made you decide to come to Japan?", "ja": "日本に来ようと思ったきっかけは何ですか？" }
+      ],
+      "opening": {
+        "easy": "Hi! I'm Jordan. Nice to meet you! What should I call you?",
+        "normal": "Hey, I'm Jordan! I just got here from the States last week. What should I call you?",
+        "challenge": "Hey there! I'm Jordan. I literally just got to Japan last week, so I'm still kind of jet-lagged. What should I call you?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Only ask what to call the student; never ask for a full name or university name. Share your own reasons for coming to Japan and what surprised you so far."
+    },
+    {
+      "id": "u02",
+      "category": "大学生活",
+      "title_ja": "サークル・ゼミを紹介する",
+      "title_en": "Talking about your club or seminar",
+      "setting_ja": "留学生から、入るサークルやゼミについて相談されます。",
+      "setting_en": "An exchange student asks for advice about joining a university club or seminar",
+      "ai_role_ja": "ドイツからの留学生 Lena",
+      "ai_role_en": "Lena, an exchange student from Germany who wants to make Japanese friends through a club",
+      "ai_role_voice_hint": "female",
+      "user_role_ja": "日本の大学生（サークル・ゼミに入っていなくてもOK）",
+      "user_role_en": "a Japanese university student (it is fine if they are not in a club or seminar)",
+      "goal_ja": "自分のサークル・ゼミ（または普段の過ごし方）を説明し、相手に合いそうなものをすすめる",
+      "goal_en": "Describe their club or seminar (or how they spend their time) and recommend something that would suit Lena",
+      "key_phrases": [
+        { "en": "I belong to ...", "ja": "…に所属しています" },
+        { "en": "We usually meet ...", "ja": "ふだんは…に集まります" },
+        { "en": "If I were you, I'd ...", "ja": "私だったら…します" }
+      ],
+      "opening": {
+        "easy": "Hi! I want to join a club. Are you in a club?",
+        "normal": "Hi! I really want to join a club to make Japanese friends. Are you in a club or a seminar?",
+        "challenge": "Hey! So I've been thinking about joining a club, mostly to make some Japanese friends, but there are so many. Are you in one?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Explain that German universities do not usually have clubs like Japanese ones. Ask about how often they meet, what they do, and whether beginners are welcome."
+    },
+    {
+      "id": "u03",
+      "category": "アルバイト・仕事",
+      "title_ja": "アルバイト先のカフェで接客する",
+      "title_en": "Serving a customer at your part-time job",
+      "setting_ja": "アルバイト先のカフェに、英語を話す観光客が来ました。",
+      "setting_en": "A cafe in Japan where the student works part-time; an English-speaking tourist comes in",
+      "ai_role_ja": "観光客のお客さん",
+      "ai_role_en": "a tourist from Australia who does not speak Japanese and is curious about the menu",
+      "ai_role_voice_hint": "female",
+      "user_role_ja": "カフェの店員（アルバイト）",
+      "user_role_en": "a cafe staff member (part-time job)",
+      "goal_ja": "注文を受け、サイズ・店内か持ち帰りかを確認し、おすすめを説明する",
+      "goal_en": "Take the order, confirm the size and whether it is for here or to go, and explain a recommendation",
+      "key_phrases": [
+        { "en": "Are you ready to order?", "ja": "ご注文はお決まりですか？" },
+        { "en": "For here or to go?", "ja": "店内でお召し上がりですか、お持ち帰りですか？" },
+        { "en": "I'd recommend the ...", "ja": "…がおすすめです" }
+      ],
+      "opening": {
+        "easy": "Hello! Sorry, I don't speak Japanese. Is that okay?",
+        "normal": "Hi! Sorry, I don't speak any Japanese. Do you have an English menu?",
+        "challenge": "Hi there! Sorry, my Japanese is basically nonexistent. Is it okay if I order in English? Everything looks so good."
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Ask about a seasonal drink or a Japanese-style item (for example, matcha latte or a sweet potato dessert). Ask one or two questions a real customer would ask (Is it sweet? Does it have caffeine?)."
+    },
+    {
+      "id": "u04",
+      "category": "大学生活",
+      "title_ja": "留学生をキャンパス・駅まで案内する",
+      "title_en": "Showing an exchange student around",
+      "setting_ja": "キャンパスで道に迷っている留学生に声をかけます。",
+      "setting_en": "On campus, the student helps an exchange student who looks lost",
+      "ai_role_ja": "フランスからの留学生 Hugo",
+      "ai_role_en": "Hugo, an exchange student from France who is looking for the library and later the nearest station",
+      "ai_role_voice_hint": "male",
+      "user_role_ja": "日本の大学生",
+      "user_role_en": "a Japanese university student",
+      "goal_ja": "図書館の場所と、最寄り駅への行き方・かかる時間を説明する",
+      "goal_en": "Explain where the library is, how to get to the nearest station, and how long it takes",
+      "key_phrases": [
+        { "en": "Are you looking for something?", "ja": "何かお探しですか？" },
+        { "en": "It's right next to ...", "ja": "…のすぐ隣です" },
+        { "en": "It takes about ... minutes on foot.", "ja": "歩いて約…分です" }
+      ],
+      "opening": {
+        "easy": "Excuse me. Where is the library?",
+        "normal": "Excuse me, sorry to bother you. Do you know where the library is? I've been walking in circles.",
+        "challenge": "Hey, sorry to bug you. I'm totally lost. I've been looking for the library for like fifteen minutes. Any idea where it is?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "After the library, ask how to get to the nearest station and whether there is a convenience store on the way. Let the student invent campus details."
+    },
+    {
+      "id": "u05",
+      "category": "海外旅行",
+      "title_ja": "空港でチェックインする",
+      "title_en": "Checking in at the airport",
+      "setting_ja": "海外の空港のカウンターで、帰りの飛行機のチェックインをします。",
+      "setting_en": "An airline check-in counter at an airport abroad; the student is flying back to Japan",
+      "ai_role_ja": "航空会社のスタッフ",
+      "ai_role_en": "a polite and efficient airline check-in agent",
+      "ai_role_voice_hint": "female",
+      "user_role_ja": "帰国する旅行者",
+      "user_role_en": "a traveler flying back to Japan",
+      "goal_ja": "チェックインし、座席の希望を伝え、荷物について確認する",
+      "goal_en": "Check in, request a seat preference, and ask about baggage",
+      "key_phrases": [
+        { "en": "I'd like to check in for my flight to ...", "ja": "…行きの便にチェックインしたいです" },
+        { "en": "Could I have an aisle seat, please?", "ja": "通路側の席をお願いできますか？" },
+        { "en": "Is this okay as carry-on?", "ja": "これは機内に持ち込めますか？" }
+      ],
+      "opening": {
+        "easy": "Good morning. Where are you flying today?",
+        "normal": "Good morning! Where are you flying to today? May I see your passport, please?",
+        "challenge": "Morning! Where are we headed today? I'll just need your passport, and are you checking any bags?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Do not ask for real passport numbers; just say 'thank you' when the student hands it over. Add one small complication, such as a bag that is slightly overweight or the window seats being full."
+    },
+    {
+      "id": "u06",
+      "category": "海外旅行",
+      "title_ja": "海外のレストランで注文する",
+      "title_en": "Ordering at a restaurant abroad",
+      "setting_ja": "旅行先のレストランで、メニューについて質問しながら注文します。",
+      "setting_en": "A casual restaurant abroad; the student orders while asking about the menu",
+      "ai_role_ja": "レストランの店員",
+      "ai_role_en": "a friendly server at a busy restaurant",
+      "ai_role_voice_hint": "male",
+      "user_role_ja": "旅行中の客",
+      "user_role_en": "a customer traveling abroad",
+      "goal_ja": "料理について質問し、好み（辛さ・苦手なもの）を伝えて注文し、会計を頼む",
+      "goal_en": "Ask about a dish, explain preferences (spiciness, foods they do not like), order, and ask for the check",
+      "key_phrases": [
+        { "en": "What's in this dish?", "ja": "この料理には何が入っていますか？" },
+        { "en": "Could you make it less spicy?", "ja": "辛さを控えめにできますか？" },
+        { "en": "Could we get the check, please?", "ja": "お会計をお願いします" }
+      ],
+      "opening": {
+        "easy": "Hi! Are you ready to order?",
+        "normal": "Hi there! Have you had a chance to look at the menu? Can I get you something to drink first?",
+        "challenge": "Hey, how's it going? Have you guys been here before, or is this your first time? I can walk you through the menu."
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Recommend a popular dish and explain it briefly. If the student asks for something not on the menu, suggest an alternative. Do not ask about allergies or health conditions; focus on taste preferences."
+    },
+    {
+      "id": "u07",
+      "category": "海外旅行",
+      "title_ja": "ホテルの予約が見つからない",
+      "title_en": "A problem with your hotel reservation",
+      "setting_ja": "ホテルのフロントで、予約が見つからないと言われました。",
+      "setting_en": "A hotel front desk; the clerk cannot find the student's reservation",
+      "ai_role_ja": "ホテルのフロント係",
+      "ai_role_en": "a hotel front desk clerk who is polite but cannot find the reservation",
+      "ai_role_voice_hint": "female",
+      "user_role_ja": "チェックインしようとしている旅行者",
+      "user_role_en": "a traveler trying to check in",
+      "goal_ja": "予約した内容を説明し、解決策（別の部屋など）を交渉する",
+      "goal_en": "Explain the booking details and negotiate a solution (for example, another room)",
+      "key_phrases": [
+        { "en": "I have a reservation under ...", "ja": "…の名前で予約しています" },
+        { "en": "I booked it through ...", "ja": "…で予約しました" },
+        { "en": "Is there anything you can do?", "ja": "何とかしていただけませんか？" }
+      ],
+      "opening": {
+        "easy": "Hello! Welcome. Can I have your name, please?",
+        "normal": "Good evening and welcome. Do you have a reservation with us?",
+        "challenge": "Good evening! Welcome in. Checking in tonight? Let me just pull up your reservation."
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "The student may use a made-up name; do not ask for their real name, email, or card details. After some back-and-forth, offer a solution such as a different room type or a nearby partner hotel."
+    },
+    {
+      "id": "u08",
+      "category": "海外旅行",
+      "title_ja": "駅で乗り換えをたずねる",
+      "title_en": "Asking about transfers at a station",
+      "setting_ja": "海外の駅で、目的地までの乗り換えが分からず駅員にたずねます。",
+      "setting_en": "A train station abroad; the student asks a staff member how to get to their destination",
+      "ai_role_ja": "駅員",
+      "ai_role_en": "a helpful but busy station staff member",
+      "ai_role_voice_hint": "male",
+      "user_role_ja": "旅行者",
+      "user_role_en": "a traveler",
+      "goal_ja": "目的地までの行き方・乗り換え・切符の買い方を聞き、内容を確認する",
+      "goal_en": "Find out how to get to their destination, where to transfer, and how to buy a ticket, then confirm the directions",
+      "key_phrases": [
+        { "en": "Which line should I take to get to ...?", "ja": "…へ行くには何線に乗ればいいですか？" },
+        { "en": "Where do I need to change trains?", "ja": "どこで乗り換えればいいですか？" },
+        { "en": "Just to make sure, ...", "ja": "念のため確認ですが…" }
+      ],
+      "opening": {
+        "easy": "Hi. Can I help you?",
+        "normal": "Hi, you look a little confused. Where are you trying to go?",
+        "challenge": "Hey, need a hand? These maps are a nightmare. Where are you headed?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Give directions with one transfer. Encourage the student to repeat the key points to confirm. Add a small complication, such as a delayed line."
+    },
+    {
+      "id": "u09",
+      "category": "留学",
+      "title_ja": "教授のオフィスアワーで質問する",
+      "title_en": "Asking a professor a question during office hours",
+      "setting_ja": "留学先の大学で、課題について教授の研究室に質問しに行きます。",
+      "setting_en": "Office hours at a university abroad; the student visits a professor to ask about an assignment",
+      "ai_role_ja": "教授 Dr. Harris",
+      "ai_role_en": "Dr. Harris, a kind but busy professor who teaches an introductory sociology class",
+      "ai_role_voice_hint": "female",
+      "user_role_ja": "留学中の学生",
+      "user_role_en": "an exchange student taking the class",
+      "goal_ja": "分からない点を説明して質問し、締め切りの延長をていねいにお願いする",
+      "goal_en": "Explain what they do not understand, ask questions, and politely ask for a deadline extension",
+      "key_phrases": [
+        { "en": "I have a question about ...", "ja": "…について質問があります" },
+        { "en": "I'm not sure I understand ...", "ja": "…がよく分かっていないのですが" },
+        { "en": "Would it be possible to ...?", "ja": "…していただくことは可能でしょうか？" }
+      ],
+      "opening": {
+        "easy": "Hello! Come in. How can I help you?",
+        "normal": "Hi, come on in. Have a seat. What can I help you with today?",
+        "challenge": "Oh, hi! Come on in, grab a seat. You're in my intro class, right? What's on your mind?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "The assignment is a short essay comparing family roles in two countries. Answer questions clearly. Agree to a short extension only if the student explains the reason politely."
+    },
+    {
+      "id": "u10",
+      "category": "留学",
+      "title_ja": "寮のルームメイトとルールを決める",
+      "title_en": "Setting rules with your roommate",
+      "setting_ja": "留学先の寮で、ルームメイトと共同生活のルールを話し合います。",
+      "setting_en": "A dormitory abroad; the student and their new roommate discuss house rules",
+      "ai_role_ja": "ルームメイト Taylor",
+      "ai_role_en": "Taylor, a friendly but very social roommate who likes having friends over",
+      "ai_role_voice_hint": "female",
+      "user_role_ja": "留学中の学生",
+      "user_role_en": "an exchange student",
+      "goal_ja": "掃除・音・来客について自分の希望を伝え、お互いが納得するルールを決める",
+      "goal_en": "Share their preferences about cleaning, noise, and guests, and agree on rules that work for both",
+      "key_phrases": [
+        { "en": "Would you mind if ...?", "ja": "…してもかまいませんか？" },
+        { "en": "How about we take turns ...?", "ja": "…を交代でするのはどうですか？" },
+        { "en": "That works for me.", "ja": "それでいいですよ" }
+      ],
+      "opening": {
+        "easy": "Hi roommate! Can we talk about some rules?",
+        "normal": "Hey! So, since we're sharing the room, maybe we should talk about some ground rules?",
+        "challenge": "Hey, so before things get awkward, wanna hash out some ground rules? Like cleaning, noise, people coming over, that kind of stuff?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "You like having friends over late at night, which may conflict with the student. Be open to compromise. Keep it friendly."
+    },
+    {
+      "id": "u11",
+      "category": "意見・将来",
+      "title_ja": "日本の話題について意見を言う",
+      "title_en": "Sharing your opinion about life in Japan",
+      "setting_ja": "留学生と、日本の社会や生活についての話題で意見を交わします。",
+      "setting_en": "A casual discussion with an exchange student about society and daily life in Japan",
+      "ai_role_ja": "イギリスからの留学生 Oliver",
+      "ai_role_en": "Oliver, an exchange student from the UK who is curious and likes to discuss ideas",
+      "ai_role_voice_hint": "male",
+      "user_role_ja": "日本の大学生",
+      "user_role_en": "a Japanese university student",
+      "goal_ja": "話題（例：働き方、キャッシュレス、観光客の増加）について、自分の意見と理由・具体例を伝える",
+      "goal_en": "Give their opinion on a topic (for example, work culture, cashless payments, or rising tourism) with reasons and an example",
+      "key_phrases": [
+        { "en": "In my opinion, ...", "ja": "私の意見では…" },
+        { "en": "For example, ...", "ja": "たとえば…" },
+        { "en": "I see your point, but ...", "ja": "言いたいことは分かりますが…" }
+      ],
+      "opening": {
+        "easy": "Hi! Can I ask you something? Do people in Japan work a lot?",
+        "normal": "Hey, can I ask you something I've been curious about? Do you think people in Japan work too much?",
+        "challenge": "Can I pick your brain about something? I keep hearing that people in Japan work crazy hours. Is that actually true, or is it kind of a stereotype?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Start with work culture, then move to one other topic if time allows. Share a view from the UK, and gently disagree once so the student practices responding. Avoid political party debates."
+    },
+    {
+      "id": "u12",
+      "category": "意見・将来",
+      "title_ja": "インターンの英語面接",
+      "title_en": "An English interview for an internship",
+      "setting_ja": "外資系企業のインターンシップの、オンライン英語面接を受けます。",
+      "setting_en": "An online English interview for a summer internship at an international company",
+      "ai_role_ja": "面接官 Ms. Patel",
+      "ai_role_en": "Ms. Patel, a friendly but professional HR interviewer",
+      "ai_role_voice_hint": "female",
+      "user_role_ja": "インターンに応募した大学生",
+      "user_role_en": "a university student applying for the internship",
+      "goal_ja": "自己PR・志望理由・強みの具体例を伝え、最後に質問を1つする",
+      "goal_en": "Introduce themselves, explain why they applied, give a concrete example of a strength, and ask one question at the end",
+      "key_phrases": [
+        { "en": "I applied because ...", "ja": "…なので応募しました" },
+        { "en": "One of my strengths is ...", "ja": "私の強みの一つは…です" },
+        { "en": "May I ask a question about ...?", "ja": "…について質問してもよろしいですか？" }
+      ],
+      "opening": {
+        "easy": "Hello! Thank you for coming. Please tell me about yourself.",
+        "normal": "Hello, and thank you for joining us today. To start, could you tell me a little about yourself?",
+        "challenge": "Hi, thanks so much for making the time today. Let's dive right in. Could you walk me through your background and what brought you to apply?"
+      },
+      "max_turns": { "easy": 6, "normal": 8, "challenge": 10 },
+      "notes_for_ai": "Ask two or three typical questions, including one follow-up asking for a concrete example. Do not ask for the student's real name, university name, or contact details; they may describe their studies in general terms."
+    }
+  ]
+}

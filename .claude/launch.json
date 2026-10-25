@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/dev-server.js"],
+      "port": 8000
+    },
+    {
+      "name": "worker",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/run-worker-dev.js"],
+      "port": 8787
+    }
+  ]
+}

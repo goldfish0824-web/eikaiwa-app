@@ -1,0 +1,15 @@
+# ローカル開発用（npx wrangler dev）の設定の見本。
+# このファイルを .dev.vars という名前でコピーして使う（.dev.vars は Git に入れない）。
+#
+# ローカル用のテストパスワード（本番では使わないこと）:
+#   上級者版         local-adv
+#   学生版 Claude版  local-sc
+#   学生版 Gemini版  local-sg
+
+ALLOWED_ORIGINS="http://localhost:8000,http://127.0.0.1:8000"
+
+PASSWORDS='[{"id":"local-adv","hash":"3406b3130fad907f0e777eb9c216dec99f6107dca1f0f08ec75d7064e4dbf9f5","app":"advanced","dailyMinutes":40},{"id":"local-sc","hash":"84989d777ed5cba01dbee4ecda8ceeea92c516dbea7d31a4e96fb716801881db","app":"student-claude"},{"id":"local-sg","hash":"5b20624c3e707aafe47f6e5178293bd3933d5748e0d0c12c063b4f2aaf845352","app":"student-gemini"}]'
+
+# 実際の API で試すときだけ、本物のキーを入れる。
+GEMINI_API_KEY="dummy"
+ANTHROPIC_API_KEY="dummy"

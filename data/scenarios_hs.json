@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "note": "学生版 Claude版（高校生向け）のシナリオ定義。_ja は画面表示用、_en はシステムプロンプト用。opening と max_turns はレベル（easy / normal）ごと。tts_rate はブラウザ読み上げの速度。",
+  "levels": {
+    "easy": { "name_ja": "やさしい", "name_en": "Easy", "eiken": "3級〜準2級", "tts_rate": 0.85 },
+    "normal": { "name_ja": "ふつう", "name_en": "Normal", "eiken": "準2級〜2級", "tts_rate": 0.95 }
+  },
+  "categories": ["自分のこと", "学校生活", "修学旅行・旅行", "お店・トラブル", "将来"],
+  "scenarios": [
+    {
+      "id": "hs01",
+      "category": "自分のこと",
+      "title_ja": "はじめての自己紹介",
+      "title_en": "Introducing yourself",
+      "setting_ja": "オンライン交流会で、海外の高校生と初めて話します。",
+      "setting_en": "An online exchange event where the student meets a student from abroad for the first time",
+      "ai_role_ja": "海外の高校生 Emma",
+      "ai_role_en": "Emma, a friendly 17-year-old high school student from Canada",
+      "user_role_ja": "日本の高校生（名前はニックネームでOK）",
+      "user_role_en": "a Japanese high school student (may use a nickname)",
+      "goal_ja": "呼んでほしい名前・好きなこと・最近がんばっていることを伝える",
+      "goal_en": "Tell Emma what to call them, what they like, and something they are working hard on these days",
+      "key_phrases": [
+        { "en": "Please call me ...", "ja": "…と呼んでください" },
+        { "en": "I'm into ...", "ja": "…にはまっています" },
+        { "en": "These days, I'm working hard on ...", "ja": "最近、…をがんばっています" }
+      ],
+      "opening": {
+        "easy": "Hi! I'm Emma. Nice to meet you! What should I call you?",
+        "normal": "Hi there! I'm Emma from Canada. It's so nice to meet you. What should I call you?"
+      },
+      "max_turns": { "easy": 6, "normal": 8 },
+      "notes_for_ai": "Only ask what to call the student; never ask for a full name or school name. Share a little about yourself (hobbies, school life in Canada) so it feels like an exchange."
+    },
+    {
+      "id": "hs02",
+      "category": "学校生活",
+      "title_ja": "ALTの先生と休み時間に雑談",
+      "title_en": "Chatting with the ALT during a break",
+      "setting_ja": "休み時間の廊下で、ALTの先生が話しかけてきました。",
+      "setting_en": "A school hallway during a break; the ALT starts a conversation",
+      "ai_role_ja": "ALTの先生 Mr. Jones",
+      "ai_role_en": "Mr. Jones, a friendly ALT from the United States who has been in Japan for one year",
+      "user_role_ja": "その学校の生徒",
+      "user_role_en": "a student at the school",
+      "goal_ja": "週末にしたことを話し、先生にも質問を1つする",
+      "goal_en": "Talk about what they did last weekend and ask the ALT at least one question",
+      "key_phrases": [
+        { "en": "Last weekend, I ...", "ja": "先週末、…しました" },
+        { "en": "It was really fun.", "ja": "すごく楽しかったです" },
+        { "en": "How about you?", "ja": "先生はどうですか？" }
+      ],
+      "opening": {
+        "easy": "Hi! How are you today? Did you have a good weekend?",
+        "normal": "Hey, how's it going? Did you do anything fun over the weekend?"
+      },
+      "max_turns": { "easy": 6, "normal": 8 },
+      "notes_for_ai": "If the student asks you a question, answer with a short, interesting story about your own weekend in Japan."
+    },
+    {
+      "id": "hs03",
+      "category": "自分のこと",
+      "title_ja": "週末と趣味の話",
+      "title_en": "Weekends and hobbies",
+      "setting_ja": "語学交流アプリで知り合った海外の高校生と、趣味について話します。",
+      "setting_en": "A video chat with a student from abroad, talking about free time and hobbies",
+      "ai_role_ja": "オーストラリアの高校生 Liam",
+      "ai_role_en": "Liam, a 16-year-old high school student from Australia who likes surfing and games",
+      "user_role_ja": "日本の高校生",
+      "user_role_en": "a Japanese high school student",
+      "goal_ja": "自分の趣味と、それが好きな理由を伝える",
+      "goal_en": "Explain their hobby and why they like it",
+      "key_phrases": [
+        { "en": "In my free time, I usually ...", "ja": "ひまなときは、たいてい…します" },
+        { "en": "I like it because ...", "ja": "…なので好きです" },
+        { "en": "Have you ever tried ...?", "ja": "…をしたことはありますか？" }
+      ],
+      "opening": {
+        "easy": "Hi! What do you usually do on weekends?",
+        "normal": "Hey! I'm curious, what do you usually do in your free time on weekends?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "Show interest in the student's hobby and ask why they like it. Compare with your own hobbies."
+    },
+    {
+      "id": "hs04",
+      "category": "学校生活",
+      "title_ja": "部活動について話す",
+      "title_en": "Talking about club activities",
+      "setting_ja": "学校を訪問した海外の先生に、部活動について聞かれます。",
+      "setting_en": "A visiting teacher from abroad asks about club activities at a Japanese high school",
+      "ai_role_ja": "学校訪問に来たイギリスの先生 Ms. Clarke",
+      "ai_role_en": "Ms. Clarke, a teacher from the UK visiting the school, curious about Japanese club activities",
+      "user_role_ja": "その学校の生徒（部活に入っていなくてもOK）",
+      "user_role_en": "a student at the school (it is fine if they are not in a club)",
+      "goal_ja": "自分の部活（または放課後の過ごし方）と、その良いところを説明する",
+      "goal_en": "Explain their club (or how they spend time after school) and one good point about it",
+      "key_phrases": [
+        { "en": "I'm in the ... club.", "ja": "…部に入っています" },
+        { "en": "We practice ... times a week.", "ja": "週に…回練習します" },
+        { "en": "The best part is ...", "ja": "いちばん良いところは…です" }
+      ],
+      "opening": {
+        "easy": "Hello! Are you in a club at school?",
+        "normal": "Hello! I've heard club activities are very important in Japanese schools. Are you in a club?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "If the student is not in a club, ask what they do after school instead. Mention that schools in the UK do not usually have club activities like this."
+    },
+    {
+      "id": "hs05",
+      "category": "修学旅行・旅行",
+      "title_ja": "夜市で食べ物を注文する",
+      "title_en": "Ordering food at a night market",
+      "setting_ja": "修学旅行先、台北の夜市。屋台で食べ物を注文します。",
+      "setting_en": "A busy night market in Taipei during a school trip; the student orders food at a food stall",
+      "ai_role_ja": "屋台の店員さん",
+      "ai_role_en": "a friendly food stall vendor who speaks simple English to tourists",
+      "user_role_ja": "修学旅行中の高校生",
+      "user_role_en": "a Japanese high school student on a school trip",
+      "goal_ja": "おすすめを聞いて、食べ物を2つ注文し、値段を確認して支払う",
+      "goal_en": "Ask for a recommendation, order two items, check the price, and pay",
+      "key_phrases": [
+        { "en": "What do you recommend?", "ja": "おすすめは何ですか？" },
+        { "en": "Can I have ..., please?", "ja": "…をください" },
+        { "en": "How much is it?", "ja": "いくらですか？" }
+      ],
+      "opening": {
+        "easy": "Hello! Welcome! What would you like?",
+        "normal": "Hi there, welcome! Is this your first time at the night market? What would you like?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "Offer two or three typical night market foods (for example, chicken cutlet, bubble tea, pepper buns) with simple descriptions. Prices are in New Taiwan dollars. Ask if they want it spicy or not."
+    },
+    {
+      "id": "hs06",
+      "category": "修学旅行・旅行",
+      "title_ja": "おみやげを買う",
+      "title_en": "Buying souvenirs",
+      "setting_ja": "修学旅行先のおみやげ屋さんで、家族へのおみやげを選びます。",
+      "setting_en": "A souvenir shop in Taipei; the student is choosing gifts for their family",
+      "ai_role_ja": "おみやげ屋さんの店員さん",
+      "ai_role_en": "a helpful shop clerk at a souvenir shop",
+      "user_role_ja": "修学旅行中の高校生",
+      "user_role_en": "a Japanese high school student on a school trip",
+      "goal_ja": "家族に合うおみやげを相談し、サイズや数を伝えて買う",
+      "goal_en": "Get advice on a gift for a family member, ask about size or number, and buy it",
+      "key_phrases": [
+        { "en": "I'm looking for a gift for my ...", "ja": "…へのおみやげを探しています" },
+        { "en": "Do you have a smaller one?", "ja": "もっと小さいのはありますか？" },
+        { "en": "I'll take this one.", "ja": "これにします" }
+      ],
+      "opening": {
+        "easy": "Hello! Can I help you?",
+        "normal": "Hello! Are you looking for anything special today?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "Suggest popular souvenirs such as pineapple cakes, tea, or small goods. Ask who the gift is for and offer options in different sizes or prices."
+    },
+    {
+      "id": "hs07",
+      "category": "修学旅行・旅行",
+      "title_ja": "道をたずねる",
+      "title_en": "Asking for directions",
+      "setting_ja": "自由行動中、集合場所の駅への行き方が分からなくなりました。",
+      "setting_en": "During free time on a school trip, the student cannot find the way to the train station where the group meets",
+      "ai_role_ja": "通りがかりの親切な人",
+      "ai_role_en": "a kind local person walking by who speaks some English",
+      "user_role_ja": "道に迷った高校生",
+      "user_role_en": "a high school student who is a little lost",
+      "goal_ja": "駅への行き方と、かかる時間を聞いて確認する",
+      "goal_en": "Find out how to get to the station and how long it takes, and confirm the directions",
+      "key_phrases": [
+        { "en": "Excuse me, could you help me?", "ja": "すみません、助けていただけますか？" },
+        { "en": "How can I get to ...?", "ja": "…へはどうやって行けばいいですか？" },
+        { "en": "How long does it take?", "ja": "どのくらい時間がかかりますか？" }
+      ],
+      "opening": {
+        "easy": "Hi. Are you okay? You look lost.",
+        "normal": "Hi there. You look a little lost. Is everything okay? Can I help you?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "Give directions in simple steps (go straight, turn left at the convenience store). Encourage the student to repeat the directions to confirm."
+    },
+    {
+      "id": "hs08",
+      "category": "修学旅行・旅行",
+      "title_ja": "現地の高校生と交流する",
+      "title_en": "Meeting local high school students",
+      "setting_ja": "修学旅行の学校交流で、現地の高校生と英語で話します。",
+      "setting_en": "A school exchange event during the school trip; the student talks with a local high school student in English",
+      "ai_role_ja": "台湾の高校生 Mei",
+      "ai_role_en": "Mei, a 17-year-old high school student in Taipei who is also learning English",
+      "user_role_ja": "日本から来た高校生",
+      "user_role_en": "a Japanese high school student visiting the school",
+      "goal_ja": "おたがいの学校生活を比べて、同じところと違うところを1つずつ見つける",
+      "goal_en": "Compare school life and find one thing that is the same and one thing that is different",
+      "key_phrases": [
+        { "en": "What time does your school start?", "ja": "あなたの学校は何時に始まりますか？" },
+        { "en": "That's the same in Japan.", "ja": "それは日本でも同じです" },
+        { "en": "That's different from my school.", "ja": "それは私の学校とは違います" }
+      ],
+      "opening": {
+        "easy": "Hi! Welcome to our school! I'm Mei. What do you think of Taipei?",
+        "normal": "Hi! Welcome to our school! I'm Mei. Is this your first time in Taiwan? What do you think of Taipei so far?"
+      },
+      "max_turns": { "easy": 7, "normal": 10 },
+      "notes_for_ai": "You are also an English learner, so speak simply and kindly. Share facts about school life in Taiwan (school hours, lunch, uniforms, clubs) and ask about Japan. Do not ask for the student's school name."
+    },
+    {
+      "id": "hs09",
+      "category": "お店・トラブル",
+      "title_ja": "ホテルで困ったことを伝える",
+      "title_en": "Explaining a problem at a hotel",
+      "setting_ja": "旅行先のホテルで、部屋のシャワーのお湯が出ません。フロントに電話します。",
+      "setting_en": "A hotel during a trip; the hot water in the shower is not working, and the student calls the front desk",
+      "ai_role_ja": "ホテルのフロント係",
+      "ai_role_en": "a polite hotel front desk staff member",
+      "user_role_ja": "宿泊している高校生",
+      "user_role_en": "a high school student staying at the hotel",
+      "goal_ja": "部屋番号と問題を伝え、いつ直してもらえるか確認する",
+      "goal_en": "Give the room number, explain the problem, and confirm when it will be fixed",
+      "key_phrases": [
+        { "en": "There's a problem with ...", "ja": "…に問題があります" },
+        { "en": "My room number is ...", "ja": "部屋番号は…です" },
+        { "en": "Could you send someone, please?", "ja": "誰か来ていただけますか？" }
+      ],
+      "opening": {
+        "easy": "Hello, front desk. How can I help you?",
+        "normal": "Good evening, this is the front desk. How may I help you?"
+      },
+      "max_turns": { "easy": 6, "normal": 8 },
+      "notes_for_ai": "A hotel room number is not personal information here; the student can make one up. Ask clarifying questions (Is the water cold? Did you try the other faucet?) and offer a solution."
+    },
+    {
+      "id": "hs10",
+      "category": "お店・トラブル",
+      "title_ja": "落とし物をした",
+      "title_en": "Losing something",
+      "setting_ja": "観光地で、さっきまで持っていたカバンがありません。案内所に相談します。",
+      "setting_en": "At a tourist spot, the student realizes their bag is missing and goes to the information center",
+      "ai_role_ja": "案内所のスタッフ",
+      "ai_role_en": "a calm and helpful staff member at a tourist information center",
+      "user_role_ja": "カバンをなくした高校生",
+      "user_role_en": "a high school student who has lost a bag",
+      "goal_ja": "なくした物の色・形・中身と、最後に見た場所を説明する",
+      "goal_en": "Describe the lost item (color, shape, contents) and where they last saw it",
+      "key_phrases": [
+        { "en": "I lost my ...", "ja": "…をなくしました" },
+        { "en": "It's a small black bag with ...", "ja": "…が入った小さい黒いカバンです" },
+        { "en": "I think I left it at ...", "ja": "…に置き忘れたと思います" }
+      ],
+      "opening": {
+        "easy": "Hello. You look worried. What's wrong?",
+        "normal": "Hello, you look a bit worried. Is something wrong? How can I help?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "Ask questions to get a description. Do not ask for phone numbers or addresses; say you will contact the student's teacher or tour guide instead. End by saying someone found a bag that matches."
+    },
+    {
+      "id": "hs11",
+      "category": "自分のこと",
+      "title_ja": "日本のことを紹介する",
+      "title_en": "Introducing Japan",
+      "setting_ja": "日本に来たばかりの留学生に、日本のおすすめを聞かれます。",
+      "setting_en": "An exchange student who has just arrived in Japan asks the student for recommendations",
+      "ai_role_ja": "アメリカからの留学生 Noah",
+      "ai_role_en": "Noah, an exchange student from the United States who has just arrived in Japan",
+      "user_role_ja": "日本の高校生",
+      "user_role_en": "a Japanese high school student",
+      "goal_ja": "おすすめの食べ物・場所・季節の行事のどれか1つを、理由をつけて紹介する",
+      "goal_en": "Recommend one Japanese food, place, or seasonal event and explain why",
+      "key_phrases": [
+        { "en": "You should try ...", "ja": "…をぜひ試してみて" },
+        { "en": "It's famous for ...", "ja": "…で有名です" },
+        { "en": "Many people in Japan ...", "ja": "日本では多くの人が…します" }
+      ],
+      "opening": {
+        "easy": "Hi! I just came to Japan. What food should I try?",
+        "normal": "Hi! I just arrived in Japan last week. What's something I really should try or see while I'm here?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "Ask simple follow-up questions (What does it taste like? When is it? Where can I go?). Show excitement."
+    },
+    {
+      "id": "hs12",
+      "category": "将来",
+      "title_ja": "将来の夢・進路について話す",
+      "title_en": "Talking about future plans",
+      "setting_ja": "ALTの先生と、卒業後の進路や将来やってみたいことについて話します。",
+      "setting_en": "A conversation with the ALT about plans after graduation and future dreams",
+      "ai_role_ja": "ALTの先生 Ms. Brown",
+      "ai_role_en": "Ms. Brown, a supportive ALT who likes hearing about students' dreams",
+      "user_role_ja": "高校2年生（まだ決まっていなくてもOK）",
+      "user_role_en": "a second-year high school student (it is fine if they have not decided yet)",
+      "goal_ja": "将来やってみたいこと（または興味のあること）と、その理由を伝える",
+      "goal_en": "Talk about what they want to do in the future (or what they are interested in) and why",
+      "key_phrases": [
+        { "en": "In the future, I want to ...", "ja": "将来、…したいです" },
+        { "en": "I'm interested in ...", "ja": "…に興味があります" },
+        { "en": "I haven't decided yet, but ...", "ja": "まだ決めていませんが…" }
+      ],
+      "opening": {
+        "easy": "Hi! What do you want to do in the future?",
+        "normal": "Hi! I've been wondering, what are you thinking about doing after you graduate?"
+      },
+      "max_turns": { "easy": 6, "normal": 9 },
+      "notes_for_ai": "If the student has not decided, ask about their interests and favorite subjects instead. Be encouraging. Do not ask which university or company by name."
+    }
+  ]
+}

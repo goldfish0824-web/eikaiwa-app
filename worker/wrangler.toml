@@ -1,0 +1,22 @@
+# 英会話アプリ用の Worker（新規）。設定の手順は worker/README.md を参照。
+name = "eikaiwa-worker"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# 許可する Origin（カンマ区切り）。ローカル開発では .dev.vars の値で上書きされる。
+[vars]
+ALLOWED_ORIGINS = "https://goldfish0824-web.github.io"
+
+# 利用回数・安全フラグ件数のカウンター。
+# `npx wrangler kv namespace create USAGE` で作成し、表示された id に書き換える。
+[[kv_namespaces]]
+binding = "USAGE"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+# Secret（wrangler secret put で設定。ここには書かない）
+#   GEMINI_API_KEY     … 課金を有効にした Google AI Studio のキー
+#   ANTHROPIC_API_KEY  … Anthropic のキー（学生版 Claude版・フェーズ4から）
+#   PASSWORDS          … パスワードの定義（JSON。tools/hash-password.js で作る）
+
+[observability]
+enabled = true

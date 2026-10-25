@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1f6f5c">
+  <title>AI英会話 上級者版</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <main id="app">
+    <p class="loading" id="loading">読み込み中…</p>
+
+    <!-- ログイン -->
+    <section class="screen" id="screen-login" hidden>
+      <h1 class="title">AI英会話 <span>上級者版</span></h1>
+      <div class="notice">
+        <p><strong>このアプリは18歳以上の方向けです。</strong></p>
+        <ul>
+          <li>会話の相手は AI です（人間ではありません）。</li>
+          <li>あなたの声は、会話のために Google の AI サービス（Gemini API）に直接送られます。会話の内容はこのアプリのサーバーには保存しません。</li>
+          <li>AI の英語や説明が間違っていることもあります。</li>
+        </ul>
+        <label class="check" id="age-row"><input type="checkbox" id="age-check"> 18歳以上です。上記を確認しました。</label>
+      </div>
+      <form id="login-form" class="stack">
+        <label for="password">パスワード</label>
+        <input id="password" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false" required>
+        <button type="submit" class="btn primary" id="login-btn">ログイン</button>
+        <p class="error" id="login-error" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- ホーム -->
+    <section class="screen" id="screen-home" hidden>
+      <header class="bar">
+        <h1 class="title small">AI英会話 <span>上級者版</span></h1>
+        <button class="link" id="logout-btn" type="button">ログアウト</button>
+      </header>
+      <p class="remaining" id="remaining"></p>
+      <h2>モード</h2>
+      <div class="modes" id="modes"></div>
+      <h2>会話の長さ</h2>
+      <div class="segmented" id="minutes"></div>
+      <p class="hint">🎧 イヤホンの使用をおすすめします（AI が自分の声に反応してしまうのを防ぎます）。</p>
+      <button class="btn primary big" id="go-btn" type="button">会話の画面へ</button>
+    </section>
+
+    <!-- 会話 -->
+    <section class="screen" id="screen-talk" hidden>
+      <header class="bar">
+        <button class="link" id="back-btn" type="button">← ホーム</button>
+        <span class="mode-label" id="talk-mode"></span>
+      </header>
+      <div class="partner" id="partner" hidden></div>
+      <div class="timer" id="timer" aria-live="off">5:00</div>
+      <p class="status" id="status" aria-live="polite"></p>
+      <div class="meter" aria-hidden="true"><div id="meter-bar"></div></div>
+      <button class="talk-btn" id="talk-btn" type="button">開始</button>
+      <div class="controls">
+        <button class="btn" id="pause-btn" type="button" disabled>一時停止</button>
+        <button class="btn" id="repeat-btn" type="button" disabled>もう一度</button>
+        <button class="btn" id="caption-btn" type="button">字幕を表示</button>
+      </div>
+      <label class="check small"><input type="checkbox" id="echo-check"> イヤホンなしで使う（AI が話している間は、自分の声を送りません）</label>
+      <p class="error" id="talk-error" role="alert"></p>
+      <ol class="captions" id="captions" hidden></ol>
+    </section>
+
+    <!-- 結果 -->
+    <section class="screen" id="screen-result" hidden>
+      <h1 class="title small">おつかれさまでした</h1>
+      <p id="result-summary"></p>
+      <div class="card">
+        <h2>費用の目安（実測用）</h2>
+        <div id="usage"></div>
+      </div>
+      <div class="card">
+        <h2>文字起こし</h2>
+        <ol class="transcript" id="transcript"></ol>
+        <button class="btn" id="copy-btn" type="button">文字起こしをコピー</button>
+      </div>
+      <p class="hint">言い直しレポートとフレーズ帳は、次の段階（フェーズ2）で追加します。</p>
+      <button class="btn primary big" id="home-btn" type="button">ホームへ</button>
+    </section>
+  </main>
+</body>
+</html>

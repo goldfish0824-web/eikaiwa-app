@@ -1,0 +1,11 @@
+{
+  "name": "eikaiwa-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx wrangler dev --port 8787",
+    "deploy": "node tools/sync-embedded.js --check && node --test \"test/*.test.js\" && npx wrangler deploy",
+    "sync": "node tools/sync-embedded.js",
+    "test": "node --test \"test/*.test.js\""
+  }
+}
