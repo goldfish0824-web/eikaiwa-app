@@ -2,6 +2,6 @@
 // localhost で開いたときは、ローカルの Worker（npm run dev）を使う。
 const PRODUCTION_URL = "https://eikaiwa-worker.goldfish0824.workers.dev";
 
-const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
+const isLocal = ["localhost", "127.0.0.1"].includes(globalThis.location?.hostname);
 
 export const WORKER_URL = isLocal ? "http://localhost:8787" : PRODUCTION_URL;

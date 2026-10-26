@@ -36,18 +36,19 @@
 - [ ] **確認**：各モードがねらいどおりに振る舞うか。通常版とじっくり考える版の比較
 
 ## フェーズ4：学生版の共通部品＋Claude版の最小構成（高校生・3シナリオ）
-- [ ] `shared/student-core/`：シナリオ選択、レベル選択、今日のフレーズ、ロールプレイ、ふりかえり、相談先画面（エンジンに依存しない作り）
-- [ ] `shared/engines/claude-engine.js`：ブラウザの音声認識（確認してから送る）・読み上げ、`/sc/turn`・`/sc/summary`
-- [ ] `/sc/turn`、`/sc/summary`（`prompts/student_turn_claude.md`, `prompts/student_summary.md`）
-- [ ] ログイン画面の注意事項（Claude版の文言）
-- [ ] `safety_flag` の処理（`support` で会話終了と相談先表示）
-- [ ] シナリオ hs01・hs02・hs05 で動作確認
+2026-10-26：コードと自動テストまでできた。偽のエンジン（`?mock=1`）とローカルの Worker で画面の流れを確認済み。本物の Claude での確認は、`ANTHROPIC_API_KEY` の登録後。
+- [x] `shared/student-core/`：シナリオ選択、レベル選択、今日のフレーズ、ロールプレイ、ふりかえり、相談先画面（エンジンに依存しない作り）
+- [x] `shared/engines/claude-engine.js`：ブラウザの音声認識（確認してから送る）・読み上げ、`/sc/turn`・`/sc/summary`
+- [x] `/sc/turn`、`/sc/summary`（`prompts/student_turn_claude.md`, `prompts/student_summary.md`）
+- [x] ログイン画面の注意事項（Claude版の文言）
+- [x] `safety_flag` の処理（`support` で会話終了と相談先表示）
+- [ ] シナリオ hs01・hs02・hs05 で動作確認（偽のエンジンでは確認済み。本物の Claude では未）
 - [ ] **確認**：iPhone Safari・学校のタブレットで音声認識と読み上げが安定するか。不都合があれば開発者に報告（音声部分を OpenAI に差し替えるかは開発者が判断）
 
 ## フェーズ5：Claude版の完成と試験運用
-- [ ] 12シナリオすべて、レベル2段階
-- [ ] 「使い方と注意」ページ
-- [ ] 端末ごとの上限、全体の上限、安全フラグの件数
+- [x] 12シナリオすべて、レベル2段階（前倒し。本物の Claude での確認は未）
+- [x] 「使い方と注意」ページ
+- [x] 端末ごとの上限、全体の上限、安全フラグの件数（Worker のテストで確認済み）
 - [ ] 安全面のテスト（下記チェックリスト）
 - [ ] 管理職への相談・学校の方針の確認（開発者が行う）
 - [ ] 数人の生徒で試験運用 → 感想を聞いて修正 → 配布
@@ -88,9 +89,9 @@
 - [ ] 通信が切れたときに固まらず、エラーメッセージが出る
 
 ### アクセス制御（最重要）
-- [ ] `student-claude` のパスワードで `/sg/turn`・`/sg/tts`・`/sg/summary`・`/adv/token`・`/adv/report` を呼ぶと 403 になる
+- [x] `student-claude` のパスワードで `/sg/turn`・`/sg/tts`・`/sg/summary`・`/adv/token`・`/adv/report` を呼ぶと 403 になる（Worker のテストで確認）
 - [ ] `student-gemini` のパスワードで `/sc/*`・`/adv/*` を呼ぶと 403 になる
-- [ ] `student-claude/` のページを開いたとき、開発者ツールの通信に Gemini 関連の通信が一切ない
+- [ ] `student-claude/` のページを開いたとき、開発者ツールの通信に Gemini 関連の通信が一切ない（読み込むファイルに Gemini のコードがないことは `test/student-claude-isolation.test.js` で確認済み）
 - [ ] Gemini版のログイン画面で「18歳以上です」にチェックしないと進めない
 
 ### 上級者版

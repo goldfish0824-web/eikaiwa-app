@@ -75,6 +75,24 @@ export function mockFetch(t, handler = () => tokenResponse()) {
   return calls;
 }
 
+// Claude の Messages API の応答（構造化出力の JSON を text ブロックで返す）。
+export function claudeResponse(data, { stopReason = "end_turn", status = 200, usage } = {}) {
+  const body =
+    status === 200
+      ? {
+          id: "msg_test",
+          type: "message",
+          role: "assistant",
+          model: "claude-haiku-5-5",
+          content: [{ type: "text", text: typeof data === "string" ? data : JSON.stringify(data) }],
+          stop_reason: stopReason,
+          stop_details: stopReason === "refusal" ? { type: "refusal", category: "general_harms" } : null,
+          usage: usage ?? { input_tokens: 200, output_tokens: 100, cache_creation_input_tokens: 0, cache_read_input_tokens: 1500 },
+        }
+      : { type: "error", error: { type: "api_error", message: "test" } };
+  return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
+}
+
 export function tokenResponse(name = "auth_tokens/test-ephemeral-token") {
   return new Response(JSON.stringify({ name }), { status: 200, headers: { "Content-Type": "application/json" } });
 }

@@ -20,7 +20,9 @@ Speak のような AI 英会話学習アプリを、API を組み込んで自作
 
 ## 進み具合
 
-フェーズ0（Worker の土台）とフェーズ1（上級者版の最小構成）のコードができています。チェック状況は `spec/08_roadmap.md`。
+フェーズ0（Worker の土台）・フェーズ1（上級者版の最小構成）・フェーズ4（学生版 Claude版。12シナリオ・2レベル）のコードができています。チェック状況は `spec/08_roadmap.md`。
+
+学生版 Claude版（高校生向け）は `https://goldfish0824-web.github.io/eikaiwa-app/student-claude/` で公開する予定です。使う前に、Worker に Anthropic の API キーと高校生用のパスワードを登録します（`worker/README.md` の 1-7）。
 
 ### 実機で試すまでの手順
 
@@ -34,7 +36,9 @@ Speak のような AI 英会話学習アプリを、API を組み込んで自作
 node tools/dev-server.js
 ```
 
-`http://localhost:8000/advanced/?mock=1` を開くと、偽の AI で画面の流れ（タイマー・字幕・結果画面）を確かめられます。ログインにはローカルの Worker（`worker` フォルダで `npm run dev`）が必要です。テスト用パスワードは `worker/.dev.vars.example` にあります。
+`http://localhost:8000/advanced/?mock=1` を開くと、偽の AI で画面の流れ（タイマー・字幕・結果画面）を確かめられます。学生版 Claude版は `http://localhost:8000/student-claude/?mock=1`（費用の目安も見るなら `?mock=1&cost=1`）。ログインにはローカルの Worker（`worker` フォルダで `npm run dev`）が必要です。テスト用パスワードは `worker/.dev.vars.example` にあります。
+
+画面側のテストは、このフォルダで `node --test "test/*.test.js"`（Worker のテストは `worker` フォルダで `npm test`）。
 
 ## フォルダの中身
 
@@ -55,7 +59,9 @@ node tools/dev-server.js
 | `data/scenarios_hs.json` | 学生版 Claude版（高校生）のシナリオ12本 |
 | `data/scenarios_univ.json` | 学生版 Gemini版（大学生）のシナリオ12本 |
 | `advanced/` | 上級者版（画面・会話の制御・Live API のアダプター） |
-| `shared/` | 共通部品（マイク入力・PCM 再生・Worker の URL・端末内の保存） |
+| `student-claude/` | 学生版 Claude版（高校生向け。文言は `texts.js`） |
+| `shared/` | 共通部品（学生版の画面 `student-core/`・エンジン `engines/`・ブラウザの音声認識と読み上げ `speech/`・マイク入力・PCM 再生・Worker の URL・端末内の保存） |
+| `test/` | 画面側のテスト（高校生版に Gemini のコードが入っていないかの確認も） |
 | `worker/` | Cloudflare Worker（設定手順は `worker/README.md`） |
 | `tools/` | ローカル確認用のサーバーなど |
 

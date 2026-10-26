@@ -39,6 +39,19 @@
 - Worker の URL は `shared/worker-url.js` に1か所だけ書く（localhost で開いたときはローカルの Worker `http://localhost:8787` を使う）。
 - ローカル確認用に `tools/dev-server.js`（静的ファイルサーバー、`http://localhost:8000/`）と `.claude/launch.json` を置く。
 - 上級者版は `?mock=1` を付けて開くと、API を使わない偽のアダプター（`advanced/adapters/mock-live.js`）で画面の流れを確認できる（開発用。通常は読み込まれない）。
+- 学生版の共通部品（2026-10-26 作成）：
+  ```
+  shared/student-core/app.js           画面の遷移（ログイン・ホーム・今日のフレーズ・ふりかえり・使い方・相談先）
+  shared/student-core/roleplay.js      ロールプレイ画面
+  shared/student-core/conversation.js  会話履歴（往復数・やり直す・使えたフレーズ）
+  shared/student-core/phrase-match.js  今日のフレーズの一致判定（単語が順番どおりに7割以上あれば OK）
+  shared/student-core/style.css
+  shared/speech/                       ブラウザの音声認識・読み上げ（Claude版のエンジンが使う）
+  shared/api.js                        Worker との通信（全アプリ共通）
+  student-claude/texts.js              Claude版の文言（注意事項・使い方・相談先）
+  ```
+- 学生版も `?mock=1` で偽のエンジン（`shared/engines/mock-engine.js`）を使える。キーボードで「support」と送ると相談先画面、「error」と送るとエラー表示を確かめられる。
+- 画面側のテストは、ルートで `node --test "test/*.test.js"`（`npm test`）。`test/student-claude-isolation.test.js` は、高校生版のページから読み込まれるファイルをすべてたどり、Gemini のコードや18歳以上向けのページへの参照がないことを確かめる。
 - GitHub Pages で `_` から始まるファイル等が除外されないよう、ルートに `.nojekyll` を置く。
 - GitHub Pages の URL 例：`https://goldfish0824-web.github.io/eikaiwa-app/student-claude/`
 - HTTPS 必須（マイク利用のため。GitHub Pages は HTTPS なので問題なし）。
@@ -47,9 +60,9 @@
 
 ### 3.0 構成（2026-10-25 決定）
 - 既存の中継を拡張せず、**このプロジェクト専用の新しい Worker（`eikaiwa-worker`）** を作った。アプリ種別によるエンドポイント制限（18歳未満に Gemini を使わせない仕組み）を、ほかの用途の中継と混ぜずに確実に保つため。
-- ファイル構成：`worker/src/index.js`（ルーティングとアクセス制御。`ROUTES` に各エンドポイントの許可アプリを書く）、`src/auth.js`、`src/usage.js`、`src/routes/*`、`src/upstream/gemini.js`（Gemini 呼び出し。`student-claude` を二重に拒否）、`src/prompts/*`（プロンプトの組み立て）。
+- ファイル構成：`worker/src/index.js`（ルーティングとアクセス制御。`ROUTES` に各エンドポイントの許可アプリを書く）、`src/auth.js`、`src/usage.js`、`src/routes/*`、`src/upstream/gemini.js`（Gemini 呼び出し。`student-claude` を二重に拒否）、`src/upstream/claude.js`（Claude 呼び出し。公式 SDK `@anthropic-ai/sdk` を使い、`student-claude` 以外を拒否。2026-10-26 追加）、`src/prompts/*`（プロンプトの組み立て）。
 - `prompts/*.md` と `data/*.json` は、`node tools/sync-embedded.js` で `src/generated/embedded.js` に変換して Worker に埋め込む。Markdown の見出しごとにコードブロックを取り出す（`- key:` の下のブロックは選択肢として扱う）。変換を忘れるとテストと `npm run deploy` が止まる。
-- テストは `node --test`（依存パッケージなし）。設定手順は `worker/README.md`。
+- テストは `node --test`。依存パッケージは Claude の公式 SDK（`@anthropic-ai/sdk`。版を固定）だけ。設定手順は `worker/README.md`。
 
 ### 3.1 Secret・設定
 | 名前 | 内容 |
@@ -93,6 +106,11 @@ export const CONFIG = {
 };
 ```
 - このほか、Live API の声・接続先 URL・API バージョン・単価（費用の概算用）・利用上限も `config.js` に置く。
+- 学生版 Claude版の呼び出し方（2026-10-26 決定）：
+  - 公式 SDK で Messages API を呼ぶ。返答は構造化出力（`output_config.format` に JSON Schema）で受け取り、Worker でも値を確かめてから返す。おかしな出力は1回だけ作り直し、それでもだめなら決まった返答（`fallback`）にする。
+  - 思考（adaptive thinking）は既定のまま。待ち時間を短くするため、`output_config.effort` を会話は `low`、ふりかえりは `medium` にする（`scTurnEffort`・`scSummaryEffort`）。temperature などは指定しない。
+  - システムプロンプトは「共通部分」「シナリオ部分」の2つに分けてキャッシュする（`cache_control`）。往復の番号はシステムプロンプトではなく生徒の発言の側に書く（キャッシュが効くように）。
+  - Claude が答えを断った場合（`stop_reason: "refusal"`）は、`redirect` の決まった返答にして安全フラグの件数に数える。
 
 ### 3.3 エンドポイントとアクセス制御
 すべて POST、JSON。全リクエストで Origin を確認し、許可外は 403。
@@ -116,7 +134,9 @@ export const CONFIG = {
   - 利用分数は「上限の確認 → トークン作成 → 成功したら加算」の順。トークン作成に失敗したら加算しない。上限に足りないときは「今日の残りは◯分です。短い会話を選んでください。」と返す。
 - 学生版の `action` は `"start"`（最初の一言）／`"reply"`（通常の返答）／`"ja2en"`（日本語→英語）。
 - システムプロンプトは**Worker 側で組み立てる**（`prompts/` の原案を埋め込む）。クライアントからはシナリオIDとレベルだけを受け取り、プロンプト本文は受け取らない。シナリオデータ（`data/*.json`）は Worker にも同梱する。
-- 学生版の `history` は最大20往復に切り詰め、1発言あたり最大300文字に制限する。`history` はテキストのみ（過去の音声は送らない）。
+- 学生版の `history` は最大20往復・1発言あたり最大300文字。`history` はテキストのみ（過去の音声は送らない）。
+  - **2026-10-26 変更**：上限を超えた `history` は切り詰めずに 400 を返す（画面側が20往復で会話を終えるので、超えるのは不正なリクエストだけ）。`reply` で生徒の発言がすでに20回あれば「会話の往復数の上限に達しました。ふりかえりに進んでください。」を返す。
+  - `/sc/turn` の出力は `{ ok, action, exchange, maxTurns, turn | ja2en, costJpy }`、`/sc/summary` は `{ ok, summary, costJpy }`。`costJpy` はその呼び出しの費用の目安（円）で、画面では `?cost=1` を付けたときだけ表示する（開発者の確認用）。
 - `/sg/turn` の音声は WAV（16kHz・モノラル）で最長30秒。サイズ超過は 413。
 - `/sg/tts` のテキストは最大400文字。利用回数に加算する（無料の読み上げサービスとして悪用されないように）。Gemini TTS が返す PCM に WAV ヘッダーを付けて返す（出力形式は公式ドキュメントで確認）。
 
@@ -147,9 +167,9 @@ Gemini API の一時トークン機能を使う。要点：
 `shared/student-core/` はこのインターフェースだけを使い、エンジン固有の処理を知らない。
 
 ```js
-// shared/engines/claude-engine.js と gemini-engine.js が実装する
+// shared/engines/claude-engine.js と gemini-engine.js が実装する（2026-10-26 実装に合わせて更新）
 class StudentEngine {
-  constructor({ workerUrl, password, deviceId, scenario, level }) {}
+  constructor({ workerUrl, password, deviceId, scenario, level, ttsRate }) {}
 
   // 能力の宣言（画面の出し分けに使う）
   capabilities = {
@@ -157,21 +177,30 @@ class StudentEngine {
     pronunciation: false,      // Gemini版: true
     interimText: true,         // 話している途中の文字を出せるか（Claude版: true）
   };
+  costJpy = 0;                          // この会話で使った費用の目安（Worker が返す costJpy の合計）
+  get canListen()                       // 声で話せるか（false ならキーボード入力にする）
 
-  async init()                          // マイク権限・音声の準備。iOS対策としてタップ操作の中で呼ぶ
+  async init()                          // 音声の準備。iOS対策としてタップ操作の中で呼ぶ（await しなくてよい）
   async startListening({ lang })        // lang: "en" | "ja"
   async stopListening()                 // → { kind: "text", text } | { kind: "audio", wavBase64, durationSec }
+  cancelListening()                     // 結果を捨てて止める
   onLevel(callback)                     // 入力レベル 0〜1
   onInterim(callback)                   // 途中経過テキスト（対応するエンジンのみ）
+  onAutoEnd(callback)                   // 無音などで自然に話し終わったとき（画面は stopListening を呼ぶ）
 
   async start()                         // → TurnResult（AIの最初の一言）
-  async reply(utterance)                // → TurnResult
-  async ja2en(utterance)                // → Ja2EnResult
+  async reply(utterance, { history })   // → TurnResult
+  async ja2en(utterance, { history })   // → Ja2EnResult
   async speak(text, { slow })           // 再生終了で resolve
   stopSpeaking()
   async summary(history, { pronunciationNotes })  // → SummaryResult
+  dispose()                             // 画面を離れるときに呼ぶ
 }
 ```
+
+- 変更点（2026-10-26）：会話履歴は画面側（`conversation.js`）が持つので、`reply`・`ja2en` に `{ history }` を渡す（エンジンは履歴を持たない）。`onAutoEnd`・`cancelListening`・`dispose`・`canListen`・`costJpy` を追加した。
+- `Ja2EnResult`：`{ en, enSimple, tipJa, safetyFlag, supportMessageJa }`。`SummaryResult`：`{ canDo, tryNext: { youSaid, better, whyJa } | null, keyPhrasesUsed: [true, false, …], privacyNoteJa, encouragementJa, pronunciationTips }`。
+- エラーは `ApiError`（`status` と日本語の `message`）として投げる。画面はメッセージをそのまま表示し、429 のときは会話を続けさせない。
 
 `TurnResult`（Worker の JSON をキャメルケースに変換したもの）：
 ```js
@@ -183,7 +212,9 @@ class StudentEngine {
   goalReached, shouldEnd,
   safetyFlag,          // "none" | "redirect" | "support"
   supportMessageJa,
-  pronunciationNoteJa  // Gemini版のみ（なければ空文字）
+  pronunciationNoteJa, // Gemini版のみ（なければ空文字）
+  exchange, maxTurns,  // 何往復目か・往復数の目安
+  fallback             // AI の出力が使えず、決まった返答にしたとき true
 }
 ```
 
@@ -229,11 +260,14 @@ class StudentEngine {
 
 ### 6.1 音声認識
 - `webkitSpeechRecognition` / `SpeechRecognition`。`lang="en-US"`、`interimResults=true`。「日本語で言う」のときだけ `lang="ja-JP"`。
-- 非対応ブラウザ・マイク拒否時はテキスト入力欄を表示。
+- 非対応ブラウザ・マイク拒否時はテキスト入力欄を表示。マイクがあってもキーボード入力に切り替えられる。
+- 実装（`shared/speech/browser-recognizer.js`。2026-10-26）：認識のたびに新しいオブジェクトを作る。重複して届いた結果は前のものを捨てる。話し終わってから1.8秒新しい言葉がなければ自動で終わる（1回の最長30秒）。止めても終わりの合図が来ないときは1.5秒で打ち切る。
+- 認識の開始はタップの処理の中で、await をはさまずに呼ぶ（iOS の制限）。
 
 ### 6.2 読み上げ
-- `speechSynthesis`。英語の声から端末で使える最も自然な声を選ぶ（優先リスト）。
+- `speechSynthesis`。英語の声から端末で使える最も自然な声を選ぶ（優先リスト：Edge・Windows の Natural の声 → iPhone・Mac の Premium／Enhanced の声 → Google US English → Samantha など）。
 - 速度はレベルに応じて設定。「もう一度」は 0.75。
+- iOS 対策：シナリオを選ぶタップの中で、音量0の空の読み上げを1回行う（`unlock`）。終わりの合図が来ない不具合に備え、文の長さから計算した時間で打ち切る。
 
 ## 7. 学生版 Gemini版の音声処理
 
@@ -290,5 +324,5 @@ Gemini版では `student` の `text` に Gemini が返した `user_transcript` �
 
 ## 10. 安全フラグの件数
 
-- 学生版で `safety_flag` が `redirect` / `support` になった回数を、`日付:パスワードID:フラグ` のキーで KV に数える（内容は保存しない）。
+- 学生版で `safety_flag` が `redirect` / `support` になった回数を、`日付:パスワードID:#flag:フラグ` のキーで KV に数える（内容は保存しない）。利用回数のカウンターより長く、30日で自動削除する（`config.js` の `safetyFlagTtlSeconds`。2026-10-26 決定）。
 - 開発者が Cloudflare のダッシュボードまたは簡単な確認用エンドポイント（管理用パスワード付き）で件数を見られるようにする。`support` が出た場合に学年全体へ相談窓口を周知するなど、運用で対応するため。

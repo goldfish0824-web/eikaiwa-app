@@ -5,7 +5,7 @@ import { findPassword } from "./auth.js";
 import { HttpError, MSG, allowedOrigins, corsHeaders, errorJson, withHeaders } from "./http.js";
 import { handleAdvReport, handleAdvToken } from "./routes/adv.js";
 import { handleAuth } from "./routes/auth.js";
-import { notImplemented } from "./routes/student.js";
+import { handleScSummary, handleScTurn, notImplemented } from "./routes/student.js";
 
 // 各エンドポイントを呼べるアプリ種別。
 // 高校生用（student-claude）のパスワードでは、Gemini を使うエンドポイント（/adv/*, /sg/*）に絶対に到達させない。
@@ -13,8 +13,8 @@ export const ROUTES = {
   "/auth": { apps: APPS, handler: handleAuth },
   "/adv/token": { apps: ["advanced"], handler: handleAdvToken },
   "/adv/report": { apps: ["advanced"], handler: handleAdvReport },
-  "/sc/turn": { apps: ["student-claude"], handler: notImplemented },
-  "/sc/summary": { apps: ["student-claude"], handler: notImplemented },
+  "/sc/turn": { apps: ["student-claude"], handler: handleScTurn },
+  "/sc/summary": { apps: ["student-claude"], handler: handleScSummary },
   "/sg/turn": { apps: ["student-gemini"], handler: notImplemented, maxBytes: CONFIG.maxAudioBodyBytes },
   "/sg/tts": { apps: ["student-gemini"], handler: notImplemented },
   "/sg/summary": { apps: ["student-gemini"], handler: notImplemented },

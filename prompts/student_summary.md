@@ -61,12 +61,12 @@ Key phrases:
 2. {{KEY_PHRASE_2}}
 
 Conversation:
-[ai] ...
-[student] ...
-
-Pronunciation notes collected during the conversation (Gemini version only):
-- ...
+{{CONVERSATION}}
+{{PRONUNCIATION_NOTES}}
 ```
+
+- `{{CONVERSATION}}`：1発言1行で `[ai] …` / `[student] …`。
+- `{{PRONUNCIATION_NOTES}}`：Claude版は空。Gemini版は1行あけて「Pronunciation notes collected during the conversation:」と、メモを1件1行で `- …`。
 
 ## Worker での検証
 

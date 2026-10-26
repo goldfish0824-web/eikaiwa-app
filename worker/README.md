@@ -12,7 +12,7 @@
 |---|---|
 | Worker | 配置済み：`https://eikaiwa-worker.goldfish0824.workers.dev`（`shared/worker-url.js` に設定済み） |
 | KV | `eikaiwa-usage` を作成し、`wrangler.toml` に設定済み |
-| Secret | `GEMINI_API_KEY`・`PASSWORDS` を登録（`ANTHROPIC_API_KEY` はフェーズ4から） |
+| Secret | `GEMINI_API_KEY`・`PASSWORDS` を登録。`ANTHROPIC_API_KEY` は未登録（学生版 Claude版を使う前に 1-7 で登録） |
 
 別のパソコンで作業するときは、1-1 から順に確認します（KV の作成と URL の書き込みは不要）。
 
@@ -67,7 +67,7 @@ npm run passwords
 
 - `GEMINI_API_KEY`：聞かれたら、Google AI Studio で**課金を有効にしたプロジェクト**のキーを貼り付けます（無料枠のキーは、送った内容が Google の改善に使われるため使わない）。
 - `npm run passwords`：`passwords.local.json` の一覧を、そのまま `PASSWORDS` として登録します。
-- `ANTHROPIC_API_KEY` は学生版 Claude版（フェーズ4）から使います。そのときに `npx wrangler secret put ANTHROPIC_API_KEY` で登録します。
+- `ANTHROPIC_API_KEY`：学生版 Claude版で使います。登録のしかたは 1-7。
 
 パスワードを追加・削除したときは、もう一度 `npm run passwords` を実行します（数秒で反映。配置し直す必要はありません）。
 
@@ -85,6 +85,23 @@ npm run deploy
 - **Anthropic の利用上限**（フェーズ4から）：Anthropic Console →「Settings」→「Limits」で月の上限額を設定します。
 - Worker 側でも、1日の全体上限（上級者版60分など。`config.js` の `globalDailyLimits`）で止まるようになっています。
 
+### 1-7. 学生版 Claude版（高校生向け）を使えるようにする
+
+```bash
+npm install
+npx wrangler secret put ANTHROPIC_API_KEY
+node tools/hash-password.js --id sc-test --app student-claude --generate
+npm run passwords
+npm run deploy
+```
+
+1. `npm install`：Claude の公式 SDK（`@anthropic-ai/sdk`）が入ります（フェーズ4で追加）。
+2. `ANTHROPIC_API_KEY`：聞かれたら、Anthropic Console（https://console.anthropic.com/）の「API Keys」で作ったキーを貼り付けます。
+3. 高校生用のパスワードを作ります。表示されたパスワードを控えておき、生徒に配ります。ID（例：`sc-test`、`sc-2026-2nen`）はクラスや学年ごとに分けると、利用回数や安全フラグの件数を分けて見られます。
+4. `npm run passwords` で登録し、`npm run deploy` で配置し直します（SDK を入れたので配置し直しが必要）。
+
+使い始める前に、1-6 の Anthropic の利用上限も設定してください。
+
 ## 2. ふだんの作業
 
 | やりたいこと | コマンド |
@@ -95,7 +112,7 @@ npm run deploy
 | ローカルで動かす | `.dev.vars.example` を `.dev.vars` にコピーしてから `npm run dev` |
 | 配置した Worker のログを見る | `npm run tail` |
 
-ローカルで動かすときのテスト用パスワードは `.dev.vars.example` に書いてあります（本番では使わない）。ローカルの Worker はダミーのキーなので、実際に AI と話すには `.dev.vars` の `GEMINI_API_KEY` に本物のキーを入れます。
+ローカルで動かすときのテスト用パスワードは `.dev.vars.example` に書いてあります（本番では使わない）。ローカルの Worker はダミーのキーなので、実際に AI と話すには `.dev.vars` の `GEMINI_API_KEY`（学生版 Claude版は `ANTHROPIC_API_KEY`）に本物のキーを入れます。
 
 ## 3. モデル名・単価の変更
 
@@ -105,3 +122,11 @@ npm run deploy
 
 - 画面に「AI に接続できませんでした」と出る場合、`npm run tail` で Worker のログを見ながら試します。`auth_tokens: 失敗 400 …` と出ていれば、一時トークンの作成で Google に断られています（キーの間違い、課金未設定、モデル名の変更など）。
 - トークンは作れているのに接続できない場合は、`config.js` の `liveTokenLock` を `"all"` に変えて配置し直して試してください（接続条件の固定のしかたを変えます）。
+
+## 5. うまく動かないとき（学生版 Claude版）
+
+- 画面に「AIの応答に失敗しました」と出る場合、`npm run tail` で Worker のログを見ながら試します。
+  - `Claude: 失敗 401 authentication_error`：`ANTHROPIC_API_KEY` が違います。登録し直してください。
+  - `Claude: 失敗 400 …`：モデル名の変更などが考えられます。`config.js` の `scModel` を公式ドキュメントで確認します。
+  - `Claude: 失敗 429`・`529`：Anthropic 側の混雑や上限です。しばらく待つか、Anthropic Console の上限を確認します。
+- ログには会話の内容は出しません（エラーの種類だけ）。

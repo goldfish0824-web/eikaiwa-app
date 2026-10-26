@@ -29,10 +29,11 @@ test("上級者版のプロンプトに、全モード・全設定のブロッ�
 });
 
 test("Markdown の解析：見出しの（…）を除き、字下げしたコードブロックも読める", () => {
-  const md = "## A（説明）\n\n```\nline1\n  line2\n```\n\n## B\n\n- x:\n  ```\n  hello\n    world\n  ```\n- y（説明）：\n  ```\n  bye\n  ```\n";
+  const md =
+    "## A（説明）\n\n```\nline1\n  line2\n```\n\n## B\n\n- x:\n  ```\n  hello\n    world\n  ```\n- y（説明）：\n  ```\n  bye\n  ```\n- ja2en（数字入り）:\n  ```\n  hi\n  ```\n";
   const s = parsePromptMarkdown(md);
   assert.deepEqual(s.A.blocks, ["line1\n  line2"]);
-  assert.deepEqual(s.B.options, { x: "hello\n  world", y: "bye" });
+  assert.deepEqual(s.B.options, { x: "hello\n  world", y: "bye", ja2en: "hi" });
 });
 
 test("フィールドマスクは公式 SDK と同じく2階層目まで", () => {

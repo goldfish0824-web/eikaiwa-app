@@ -1,0 +1,9 @@
+{
+  "name": "eikaiwa-app",
+  "private": true,
+  "type": "module",
+  "description": "Sprout（英会話アプリ）の画面側。ビルド工程なし。テストだけ Node で動かす。",
+  "scripts": {
+    "test": "node --test \"test/*.test.js\""
+  }
+}

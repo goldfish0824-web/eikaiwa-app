@@ -44,7 +44,7 @@ export function parsePromptMarkdown(md) {
       optionKey = null;
       continue;
     }
-    const opt = /^- ([A-Za-z_]+)[^:：]*[:：]\s*$/.exec(line);
+    const opt = /^- ([A-Za-z_][A-Za-z0-9_]*)[^:：]*[:：]\s*$/.exec(line);
     if (opt) optionKey = opt[1];
   }
   return sections;

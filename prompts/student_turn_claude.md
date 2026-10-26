@@ -81,7 +81,7 @@ Key phrases the student is practicing:
 2. {{KEY_PHRASE_2}}
 Create natural chances for the student to use these key phrases, but do not use them yourself before the student does.
 Notes: {{NOTES_FOR_AI}}
-Turn limit: about {{MAX_TURNS}} exchanges. This is exchange {{TURN_NUMBER}}.
+Turn limit: about {{MAX_TURNS}} exchanges. Each student message tells you which exchange it is.
 For the first line ("start"), use this opening or something very close to it: "{{OPENING}}"
 ```
 
@@ -98,15 +98,34 @@ For the first line ("start"), use this opening or something very close to it: "{
 
 ## 会話履歴の渡し方
 
-`messages` に過去の往復をそのまま入れる（user：生徒の発言、assistant：前回の JSON 出力のうち `reply_en` だけ）。最新の user メッセージは次の形にする：
+`messages` に過去の往復をそのまま入れる（user：生徒の発言、assistant：前回の JSON 出力のうち `reply_en` だけ）。最初の user メッセージは start のもの。過去の発言も最新の発言も、下の形で毎回同じ文字列に組み立てる（会話の途中までをプロンプトキャッシュで再利用できるように）。
 
-```
-action: reply
-student: {{USER_TEXT}}
-```
+往復の番号はシステムプロンプトではなく user メッセージに書く（2026-10-26 変更。システムプロンプトをシナリオ・レベルごとにキャッシュできるようにするため）。
+
+- start:
+  ```
+  action: start
+  ```
+- reply:
+  ```
+  action: reply
+  exchange: {{TURN_NUMBER}} of about {{MAX_TURNS}}
+  student: {{USER_TEXT}}
+  ```
+- ja2en（会話の履歴には残さない）:
+  ```
+  action: ja2en
+  student (in Japanese): {{USER_TEXT}}
+  ```
+- last_turn（往復数の目安に達したとき、reply の末尾に1行あけて付ける）:
+  ```
+  This is the last exchange. Close the conversation naturally in character and set should_end to true.
+  ```
 
 ## Worker での検証
 
+- 構造化出力（`output_config.format` に JSON スキーマ）で受け取る。スキーマは `worker/src/prompts/student-claude.js`。
 - JSON として解析できない、または必須項目が欠けている場合は1回だけ再試行。それでも失敗したら、`reply_en` を「Sorry, could you say that again?」、`hints` を空にした定型の応答を返す。
+- Claude が安全上の理由で応答を断った場合（`stop_reason: "refusal"`）は再試行せず、同じ定型の応答を `safety_flag: "redirect"` で返す。
 - `safety_flag` が `support` のときは、他の項目にかかわらずアプリ側で会話を終了し、相談先の画面を表示する。
 - Haiku 5.5 では effort を低めに設定して応答を速くする。temperature は指定しない。
