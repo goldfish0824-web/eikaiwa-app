@@ -12,7 +12,7 @@
 |---|---|
 | Worker | 配置済み：`https://eikaiwa-worker.goldfish0824.workers.dev`（`shared/worker-url.js` に設定済み） |
 | KV | `eikaiwa-usage` を作成し、`wrangler.toml` に設定済み |
-| Secret | `GEMINI_API_KEY`・`PASSWORDS` を登録。`ANTHROPIC_API_KEY` は未登録（学生版 Claude版を使う前に 1-7 で登録） |
+| Secret | `GEMINI_API_KEY`・`ANTHROPIC_API_KEY`・`PASSWORDS` を登録（パスワードは上級者版 `adv-tomoaki`、高校生版のお試し用 `sc-test`） |
 
 別のパソコンで作業するときは、1-1 から順に確認します（KV の作成と URL の書き込みは不要）。
 
