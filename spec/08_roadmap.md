@@ -3,9 +3,9 @@
 各フェーズの終わりに、開発者が実機（PC の Chrome、iPhone の Safari）で試せる状態にしてから次へ進む。学生版の2つの順番（Claude版→Gemini版）は、開発者の都合で入れ替えてよい。
 
 ## フェーズ0：土台
-- [x] リポジトリとフォルダ構成（`advanced/`, `student-claude/`, `student-gemini/`, `shared/`, `worker/`）を作る（学生版のフォルダはフェーズ4・6で作る。Git の初期化は未）
+- [x] リポジトリとフォルダ構成（`advanced/`, `student-claude/`, `student-gemini/`, `shared/`, `worker/`）を作る（学生版のフォルダはフェーズ4・6で作る。Git は初期化して GitHub に push 済み）
 - [x] Cloudflare Worker を作成（**新規**の `eikaiwa-worker` に決定。`05_architecture.md` 3.0）
-- [ ] Secret（`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`）、KV（`USAGE`）、`PASSWORDS` を設定（開発者が手作業で行う。手順は `worker/README.md`）
+- [ ] Secret（`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`）、KV（`USAGE`）、`PASSWORDS` を設定（手順は `worker/README.md`。2026-10-26：KV `eikaiwa-usage` を作成して Worker を `https://eikaiwa-worker.goldfish0824.workers.dev` に配置済み。`GEMINI_API_KEY`・`PASSWORDS` は開発者が入力中。`ANTHROPIC_API_KEY` はフェーズ4で登録）
 - [x] `/auth`、CORS、**パスワードのアプリ種別によるエンドポイント制限**、利用回数カウンター、上限超過時の 429（テストで確認済み）
 - [x] `worker/config.js` にモデル名などを集約
 - [x] パスワードのハッシュを作る小さなスクリプト（`worker/tools/hash-password.js`）

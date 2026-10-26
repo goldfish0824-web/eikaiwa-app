@@ -8,10 +8,10 @@ compatibility_date = "2026-09-01"
 ALLOWED_ORIGINS = "https://goldfish0824-web.github.io"
 
 # 利用回数・安全フラグ件数のカウンター。
-# `npx wrangler kv namespace create USAGE` で作成し、表示された id に書き換える。
+# 名前 eikaiwa-usage（2026-10-26 作成）。作り直すときは `npx wrangler kv namespace create eikaiwa-usage` で作成し、表示された id に書き換える。
 [[kv_namespaces]]
 binding = "USAGE"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "5585de6440a442a5a770b0694cdfe489" # eikaiwa-usage
 
 # Secret（wrangler secret put で設定。ここには書かない）
 #   GEMINI_API_KEY     … 課金を有効にした Google AI Studio のキー

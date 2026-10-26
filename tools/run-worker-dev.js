@@ -1,9 +1,9 @@
-// worker/ でローカルの Worker（npx wrangler dev --port 8787）を起動する。
-// 先に worker/.dev.vars.example を worker/.dev.vars にコピーしておくこと。
+// worker/ でローカルの Worker（npm run dev。ポート 8787）を起動する。
+// 先に worker/ で npm install を実行し、worker/.dev.vars.example を worker/.dev.vars にコピーしておくこと。
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const cwd = fileURLToPath(new URL("../worker/", import.meta.url));
-const child = spawn("npx wrangler dev --port 8787", { cwd, shell: true, stdio: "inherit" });
+const child = spawn("npm run dev", { cwd, shell: true, stdio: "inherit" });
 child.on("exit", (code) => process.exit(code ?? 0));
 for (const sig of ["SIGINT", "SIGTERM"]) process.on(sig, () => child.kill(sig));

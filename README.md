@@ -24,10 +24,9 @@ Speak のような AI 英会話学習アプリを、API を組み込んで自作
 
 ### 実機で試すまでの手順
 
-1. **Worker を配置する**：`worker/README.md` の手順（KV の作成 → パスワード作成 → Secret 登録 → `npm run deploy`）。
-2. **Worker の URL を書く**：表示された URL を `shared/worker-url.js` の `PRODUCTION_URL` に書き込む。
-3. **GitHub Pages を有効にする**：リポジトリ（https://github.com/goldfish0824-web/eikaiwa-app）の「Settings」→「Pages」で、Source を「Deploy from a branch」、Branch を「main」「/ (root)」にして Save。数分で公開される。
-4. **試す**：`https://goldfish0824-web.github.io/eikaiwa-app/advanced/` を PC の Chrome と iPhone の Safari で開く。
+1. **Worker を配置する**：`worker/README.md` の手順（パスワード作成 → Secret 登録 → `npm run deploy`）。2026-10-26 に `https://eikaiwa-worker.goldfish0824.workers.dev` へ配置し、KV の作成と `shared/worker-url.js` への URL の書き込みも済んでいる。
+2. **GitHub Pages を有効にする**（有効化済み）：リポジトリ（https://github.com/goldfish0824-web/eikaiwa-app）の「Settings」→「Pages」で、Source を「Deploy from a branch」、Branch を「main」「/ (root)」にして Save。数分で公開される。
+3. **試す**：`https://goldfish0824-web.github.io/eikaiwa-app/advanced/` を PC の Chrome と iPhone の Safari で開く（`https://goldfish0824-web.github.io/eikaiwa-app/` そのものにはページがないので Not Found になる）。
 
 ### パソコンだけで画面を確かめる（API なし）
 

@@ -8,3 +8,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# パスワードのハッシュ一覧（Worker の Secret に登録する元）
+worker/passwords.local.json

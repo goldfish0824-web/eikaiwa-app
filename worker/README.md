@@ -4,23 +4,38 @@
 
 コマンドはすべて `worker` フォルダで実行します（ターミナルで `cd worker`）。
 
+> **PowerShell で「スクリプトの実行が無効になっている」と出るとき**：`npm` を `npm.cmd`、`npx` を `npx.cmd` に置き換えて実行します（例：`npm.cmd run deploy`）。Windows のセキュリティ設定は変えなくて大丈夫です。
+
+## 現在の状態（2026-10-26）
+
+| 項目 | 状態 |
+|---|---|
+| Worker | 配置済み：`https://eikaiwa-worker.goldfish0824.workers.dev`（`shared/worker-url.js` に設定済み） |
+| KV | `eikaiwa-usage` を作成し、`wrangler.toml` に設定済み |
+| Secret | `GEMINI_API_KEY`・`PASSWORDS` を登録（`ANTHROPIC_API_KEY` はフェーズ4から） |
+
+別のパソコンで作業するときは、1-1 から順に確認します（KV の作成と URL の書き込みは不要）。
+
 ## 1. はじめての準備（1回だけ）
 
-### 1-1. Cloudflare にログイン
+### 1-1. wrangler を入れて、Cloudflare にログイン
 
 ```bash
+npm install
 npx wrangler login
 ```
 
-ブラウザが開くので、Cloudflare のアカウントで許可します。
+`npm install` で、このフォルダ専用の wrangler（Cloudflare のコマンド）が入ります。ログインではブラウザが開くので、Cloudflare のアカウントで許可します。
 
-### 1-2. KV（利用回数のカウンター）を作る
+### 1-2. KV（利用回数のカウンター）を作る ※作成済み
+
+作り直すときだけ実行します。
 
 ```bash
-npx wrangler kv namespace create USAGE
+npx wrangler kv namespace create eikaiwa-usage
 ```
 
-表示された `id = "…"` の値を、`wrangler.toml` の `REPLACE_WITH_KV_NAMESPACE_ID` と置き換えます。
+表示された `id = "…"` の値を、`wrangler.toml` の `[[kv_namespaces]]` の `id` に書き込みます。
 
 ### 1-3. パスワードを作る
 
@@ -30,9 +45,9 @@ npx wrangler kv namespace create USAGE
 node tools/hash-password.js --id adv-tomoaki --app advanced
 ```
 
-パスワードを入力すると、`{"id":"adv-tomoaki","hash":"…","app":"advanced"}` のような1行が表示されます。パスワードそのものは Worker に保存されず、ハッシュだけが保存されます。
+パスワードを2回入力します（画面には表示されません）。パスワードのハッシュが `passwords.local.json`（Git には入らない）に追加されます。パスワードそのものはどこにも保存されません。
 
-学生に配布するパスワードは `--generate` を付けると、紛らわしい文字を使わないパスワードを自動で作れます（例：学生版 Claude版）。
+学生に配布するパスワードは `--generate` を付けると、紛らわしい文字を使わないパスワードを自動で作って表示します（例：学生版 Claude版）。
 
 ```bash
 node tools/hash-password.js --id sc-2026-2nen --app student-claude --generate
@@ -41,27 +56,20 @@ node tools/hash-password.js --id sc-2026-2nen --app student-claude --generate
 - `--app` は `advanced`（上級者版）／`student-claude`（高校生）／`student-gemini`（18歳以上の学生のみ）のどれか。
 - **高校生に配るパスワードは必ず `student-claude` にしてください。** このパスワードでは Gemini を使う機能（`/adv/*`・`/sg/*`）が Worker で必ず拒否されます。
 - 1日の上限を変えたいときは `--daily-minutes 40`（上級者版）、`--turns-per-device 80`・`--turns-total 3000`（学生版）を付けます。
-
-表示された行を `[ ]` の中にカンマ区切りで並べたものが `PASSWORDS` です。
-
-```json
-[{"id":"adv-tomoaki","hash":"…","app":"advanced"},{"id":"sc-2026-2nen","hash":"…","app":"student-claude"}]
-```
+- 同じ ID でもう一度実行すると、その ID のパスワードを置き換えます。削除は `node tools/hash-password.js --remove sc-2025-2nen`。
 
 ### 1-4. Secret を登録する
 
 ```bash
 npx wrangler secret put GEMINI_API_KEY
-npx wrangler secret put PASSWORDS
+npm run passwords
 ```
 
-それぞれ、聞かれたら値を貼り付けます。
-
-- `GEMINI_API_KEY`：Google AI Studio で**課金を有効にしたプロジェクト**のキー（無料枠のキーは、送った内容が Google の改善に使われるため使わない）。
-- `PASSWORDS`：1-3 で作った JSON（1行）。
+- `GEMINI_API_KEY`：聞かれたら、Google AI Studio で**課金を有効にしたプロジェクト**のキーを貼り付けます（無料枠のキーは、送った内容が Google の改善に使われるため使わない）。
+- `npm run passwords`：`passwords.local.json` の一覧を、そのまま `PASSWORDS` として登録します。
 - `ANTHROPIC_API_KEY` は学生版 Claude版（フェーズ4）から使います。そのときに `npx wrangler secret put ANTHROPIC_API_KEY` で登録します。
 
-パスワードを追加・削除するときは、`PASSWORDS` 全体を作り直して、もう一度 `npx wrangler secret put PASSWORDS` を実行します。
+パスワードを追加・削除したときは、もう一度 `npm run passwords` を実行します（数秒で反映。配置し直す必要はありません）。
 
 ### 1-5. 配置する
 
@@ -69,7 +77,7 @@ npx wrangler secret put PASSWORDS
 npm run deploy
 ```
 
-テスト（`node --test`）と、プロンプトの埋め込みが最新かの確認が通ってから配置されます。最後に表示される `https://eikaiwa-worker.＜あなたのサブドメイン＞.workers.dev` を、`shared/worker-url.js` の `PRODUCTION_URL` に書き込みます。
+テスト（`node --test`）と、プロンプトの埋め込みが最新かの確認が通ってから配置されます。Worker の名前やアカウントを変えたときは、最後に表示される URL を `shared/worker-url.js` の `PRODUCTION_URL` に書き込みます。
 
 ### 1-6. 費用の安全装置を設定する（手作業）
 
@@ -85,7 +93,7 @@ npm run deploy
 | `prompts/` や `data/` を変更した後 | `npm run sync`（Worker に埋め込むファイルを作り直す。忘れるとテストと配置が止まる） |
 | 配置 | `npm run deploy` |
 | ローカルで動かす | `.dev.vars.example` を `.dev.vars` にコピーしてから `npm run dev` |
-| 配置した Worker のログを見る | `npx wrangler tail` |
+| 配置した Worker のログを見る | `npm run tail` |
 
 ローカルで動かすときのテスト用パスワードは `.dev.vars.example` に書いてあります（本番では使わない）。ローカルの Worker はダミーのキーなので、実際に AI と話すには `.dev.vars` の `GEMINI_API_KEY` に本物のキーを入れます。
 
@@ -95,5 +103,5 @@ npm run deploy
 
 ## 4. うまく接続できないとき（上級者版）
 
-- 画面に「AI に接続できませんでした」と出る場合、`npx wrangler tail` で Worker のログを見ながら試します。`auth_tokens: 失敗 400 …` と出ていれば、一時トークンの作成で Google に断られています（キーの間違い、課金未設定、モデル名の変更など）。
+- 画面に「AI に接続できませんでした」と出る場合、`npm run tail` で Worker のログを見ながら試します。`auth_tokens: 失敗 400 …` と出ていれば、一時トークンの作成で Google に断られています（キーの間違い、課金未設定、モデル名の変更など）。
 - トークンは作れているのに接続できない場合は、`config.js` の `liveTokenLock` を `"all"` に変えて配置し直して試してください（接続条件の固定のしかたを変えます）。

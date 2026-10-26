@@ -3,9 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npx wrangler dev --port 8787",
-    "deploy": "node tools/sync-embedded.js --check && node --test \"test/*.test.js\" && npx wrangler deploy",
+    "dev": "wrangler dev --port 8787",
+    "deploy": "node tools/sync-embedded.js --check && node --test \"test/*.test.js\" && wrangler deploy",
+    "passwords": "wrangler secret put PASSWORDS < passwords.local.json",
+    "tail": "wrangler tail",
     "sync": "node tools/sync-embedded.js",
     "test": "node --test \"test/*.test.js\""
+  },
+  "devDependencies": {
+    "wrangler": "4.152.0"
   }
 }
